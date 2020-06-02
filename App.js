@@ -1,8 +1,13 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import {StyleSheet, Text, View, TouchableHighlight} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableHighlight,
+  PermissionsAndroid,
+} from 'react-native';
 import CallDetectorManager from 'react-native-call-detection';
-
 export default class App extends React.Component {
   constructor(props) {
     super(props);
@@ -12,12 +17,24 @@ export default class App extends React.Component {
       number: null,
     };
   }
+  componentDidMount() {
+    this.askPermission();
+  }
+  askPermission = async () => {
+    try {
+      const permissions = await PermissionsAndroid.requestMultiple([
+        PermissionsAndroid.PERMISSIONS.READ_CALL_LOG,
+        PermissionsAndroid.PERMISSIONS.READ_PHONE_STATE,
+      ]);
+      console.log('Permissions are:', permissions);
+    } catch (err) {
+      console.warn(err);
+    }
+  };
   startListenerTapped = () => {
     this.setState({featureOn: true});
     this.callDetector = new CallDetectorManager(
       (event, number) => {
-        // For Android event will be either "Offhook",
-        // "Disconnected", "Incoming" or "Missed"
         if (event === 'Disconnected') {
           // Do something call got disconnected
           this.setState({incoming: false, number: null});
@@ -29,11 +46,9 @@ export default class App extends React.Component {
           // At least one call exists that is dialing,
           // active, or on hold,
           // and no calls are ringing or waiting.
-          // This clause will only be executed for Android
           this.setState({incoming: true, number});
         } else if (event === 'Missed') {
           // Do something call got missed
-          // This clause will only be executed for Android
           this.setState({incoming: false, number: null});
         }
       },
