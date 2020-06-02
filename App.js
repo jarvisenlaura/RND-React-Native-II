@@ -127,6 +127,26 @@ export default class App extends React.Component {
       error,
       featureOn,
     } = this.state;
+    let result;
+    if (numberInfo && numberInfo.industry_code === '62010') {
+      result = (
+        <Text style={{fontSize: 40, textAlign: 'center'}}>
+          Potentiaalinen työnantaja!
+        </Text>
+      );
+    } else if (numberInfo && numberInfo.industry_code === '82200') {
+      result = (
+        <Text style={{fontSize: 40, textAlign: 'center'}}>
+          Pelkkä puhelinmyyjä
+        </Text>
+      );
+    } else {
+      result = (
+        <Text style={{fontSize: 40, textAlign: 'center'}}>
+          Ei tietoa, valitan.{' '}
+        </Text>
+      );
+    }
     return (
       <View style={styles.container}>
         <Text style={styles.text}>Laitetaanko numerotutka päälle?</Text>
@@ -147,11 +167,14 @@ export default class App extends React.Component {
             </Text>
           </View>
         </TouchableHighlight>
-        {incoming && <Text style={{fontSize: 20}}>PUHELU {number}</Text>}
-        {loading && <Text style={{fontSize: 20}}>Ladataan tietoja</Text>}
-        {numberInfo && (
-          <Text style={{fontSize: 20}}>{JSON.stringify(numberInfo)}</Text>
+        {incoming && <Text style={{fontSize: 20}}>Puhelu {number}</Text>}
+        {loading && (
+          <View>
+            <Text style={{fontSize: 20}}>Ladataan tietoja</Text>
+            <ActivityIndicator size="small" color="greenyellow" />
+          </View>
         )}
+        {numberInfo && result}
         {error && <Text>Tapahtui virhe</Text>}
       </View>
     );
