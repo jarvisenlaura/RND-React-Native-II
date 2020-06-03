@@ -6,7 +6,6 @@ import {
   View,
   TouchableHighlight,
   PermissionsAndroid,
-  ActivityIndicator,
 } from 'react-native';
 import CallDetectorManager from 'react-native-call-detection';
 import {apikey} from './keys';
