@@ -135,15 +135,15 @@ class App extends React.Component {
             </Text>
           </View>
         </TouchableHighlight>
-        {incoming && <Text style={{fontSize: 20}}>Call from {number}</Text>}
+        {incoming && <Text style={{fontSize: 20}}>Puhelu {number}</Text>}
         {loading && (
           <View>
-            <Text style={{fontSize: 20}}>Loading information</Text>
+            <Text style={{fontSize: 20}}>Ladataan tietoja</Text>
             <ActivityIndicator size="small" color="greenyellow" />
           </View>
         )}
         {numberInfo && result}
-        {incoming && error && <Text>Error occurred</Text>}
+        {incoming && error && <Text>Tapahtui virhe.</Text>}
       </View>
     );
   }
